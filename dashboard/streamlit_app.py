@@ -2,13 +2,15 @@
 import streamlit as st
 import pandas as pd
 import pydeck as pdk
+import os
 
 st.set_page_config(page_title="California ROI Dashboard", layout="wide")
 
 # Load your ROI dataset
 @st.cache_data
 def load_data():
-    return pd.read_csv("roi_data.csv")
+    path = os.path.join(os.path.dirname(__file__), "roi_data.csv")
+    return pd.read_csv(path)
 
 df = load_data()
 
