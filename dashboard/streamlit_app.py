@@ -61,7 +61,7 @@ else:
     st.subheader("Map of High ROI Blocks")
 
     tooltip = {
-        "html": "<b>ROI:</b> {ROI}<br/><b>Price:</b> ${PredictedPrice}M",
+        "html": "<b>ROI:</b> {ROI}<br/><b>Price:</b> ${PredictedPrice}",
         "style": {"color": "white"}
     }
 
