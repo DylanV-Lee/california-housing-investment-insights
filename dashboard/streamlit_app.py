@@ -29,35 +29,39 @@ filtered_df = df[
     (df['HouseAge'] >= house_age[0]) & (df['HouseAge'] <= house_age[1])
 ]
 
-st.subheader("Map of High ROI Blocks")
+st.subheader(f"Found {len(filtered_df)} Matching Results")
 
-tooltip = {
-    "html": "<b>ROI:</b> {ROI}<br/><b>Price:</b> ${PredictedPrice}M",
-    "style": {"color": "white"}
-}
+if filtered_df.empty:
+    st.warning("No blocks match your filter. Please adjust the sliders.")
+else:
+    st.subheader("Map of High ROI Blocks")
 
-st.pydeck_chart(pdk.Deck(
-    map_style='light',
-    initial_view_state=pdk.ViewState(
-        latitude=filtered_df['Latitude'].mean(),
-        longitude=filtered_df['Longitude'].mean(),
-        zoom=8 if len(filtered_df) > 0 else 6,
-        pitch=0,
-    ),
-    layers=[
-        pdk.Layer(
-            'ScatterplotLayer',
-            data=filtered_df,
-            get_position=["Longitude", "Latitude"],
-            get_color="[255, 140 * ROI, 0, 160]",
-            get_radius=5000,
-            pickable=True,
+    tooltip = {
+        "html": "<b>ROI:</b> {ROI}<br/><b>Price:</b> ${PredictedPrice}M",
+        "style": {"color": "white"}
+    }
+
+    st.pydeck_chart(pdk.Deck(
+        map_style="light",
+        initial_view_state=pdk.ViewState(
+            latitude=filtered_df['Latitude'].mean(),
+            longitude=filtered_df['Longitude'].mean(),
+            zoom=8,
+            pitch=0,
         ),
-    ],
-    tooltip=tooltip
-))
+        layers=[
+            pdk.Layer(
+                'ScatterplotLayer',
+                data=filtered_df,
+                get_position=["Longitude", "Latitude"],
+                get_color="[255, 140 * ROI, 0, 160]",
+                get_radius=5000,
+                pickable=True,
+            ),
+        ],
+        tooltip=tooltip
+    ))
 
+    st.markdown("### Investment Details Table")
+    st.dataframe(filtered_df[['Latitude', 'Longitude', 'PredictedPrice', 'ActualPrice', 'ROI', 'HouseAge']])
 
-# Data table
-st.markdown("### Investment Details Table")
-st.dataframe(filtered_df[['Latitude', 'Longitude', 'PredictedPrice', 'MedianHouseValue', 'ROI', 'HouseAge']])
