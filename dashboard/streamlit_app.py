@@ -29,28 +29,35 @@ filtered_df = df[
     (df['HouseAge'] >= house_age[0]) & (df['HouseAge'] <= house_age[1])
 ]
 
-st.subheader(f"Found {len(filtered_df)} Matching Results")
+st.subheader("Map of High ROI Blocks")
 
-# Map visualization
+tooltip = {
+    "html": "<b>ROI:</b> {ROI}<br/><b>Price:</b> ${PredictedPrice}M",
+    "style": {"color": "white"}
+}
+
 st.pydeck_chart(pdk.Deck(
     map_style='mapbox://styles/mapbox/light-v9',
     initial_view_state=pdk.ViewState(
         latitude=filtered_df['Latitude'].mean(),
         longitude=filtered_df['Longitude'].mean(),
-        zoom=6,
-        pitch=45,
+        zoom=8 if len(filtered_df) > 0 else 6,
+        pitch=0,
     ),
     layers=[
         pdk.Layer(
             'ScatterplotLayer',
             data=filtered_df,
-            get_position='[Longitude, Latitude]',
-            get_color='[255, 0, 0, 160]',
+            get_position=["Longitude", "Latitude"],
+            get_color="[255, 140 * ROI, 0, 160]",
             get_radius=5000,
+            pickable=True,
         ),
     ],
+    tooltip=tooltip
 ))
+
 
 # Data table
 st.markdown("### Investment Details Table")
-st.dataframe(filtered_df[['Latitude', 'Longitude', 'PredictedPrice', 'ActualPrice', 'ROI', 'HouseAge']])
+st.dataframe(filtered_df[['Latitude', 'Longitude', 'PredictedPrice', 'MedianHoseValue', 'ROI', 'HouseAge']])
