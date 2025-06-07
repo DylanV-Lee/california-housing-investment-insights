@@ -60,4 +60,4 @@ st.pydeck_chart(pdk.Deck(
 
 # Data table
 st.markdown("### Investment Details Table")
-st.dataframe(filtered_df[['Latitude', 'Longitude', 'PredictedPrice', 'MedianHoseValue', 'ROI', 'HouseAge']])
+st.dataframe(filtered_df[['Latitude', 'Longitude', 'PredictedPrice', 'MedianHouseValue', 'ROI', 'HouseAge']])
