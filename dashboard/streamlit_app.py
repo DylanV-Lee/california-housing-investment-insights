@@ -17,10 +17,34 @@ df = load_data()
 st.title("California Housing ROI Dashboard")
 
 # Sidebar filters
+
 st.sidebar.header("Filter Investment Options")
-price_range = st.sidebar.slider("Predicted Price Range (in $100,000s)", float(df['PredictedPrice'].min()), float(df['PredictedPrice'].max()), (1.0, 3.5))
-roi_range = st.sidebar.slider("ROI Range", float(df['ROI'].min()), float(df['ROI'].max()), (0.0, 1.0))
-house_age = st.sidebar.slider("House Age Range", int(df['HouseAge'].min()), int(df['HouseAge'].max()), (10, 40))
+
+price_range = st.sidebar.slider(
+    "Predicted Price Range ($)", 
+    int(df['PredictedPrice'].min()), 
+    int(df['PredictedPrice'].max()), 
+    (100000, 300000)
+)
+
+roi_cap = df['ROI'].quantile(0.99)
+roi_min = max(-20, df['ROI'].min())
+roi_max = min(roi_cap, df['ROI'].max())
+
+roi_range = st.sidebar.slider(
+    "ROI Range (%)", 
+    float(roi_min), 
+    float(roi_max), 
+    (0.0, 20.0)
+)
+
+house_age = st.sidebar.slider(
+    "House Age Range", 
+    int(df['HouseAge'].min()), 
+    int(df['HouseAge'].max()), 
+    (10, 40)
+)
+
 
 # Filter dataset
 filtered_df = df[
