@@ -63,5 +63,5 @@ else:
     ))
 
     st.markdown("### Investment Details Table")
-    st.dataframe(filtered_df[['Latitude', 'Longitude', 'PredictedPrice', 'ActualPrice', 'ROI', 'HouseAge']])
+    st.dataframe(filtered_df[['Latitude', 'Longitude', 'PredictedPrice', 'MedianHouseValue', 'ROI', 'HouseAge']])
 
