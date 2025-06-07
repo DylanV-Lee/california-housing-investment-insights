@@ -37,7 +37,7 @@ tooltip = {
 }
 
 st.pydeck_chart(pdk.Deck(
-    map_style='mapbox://styles/mapbox/light-v9',
+    map_style='light',
     initial_view_state=pdk.ViewState(
         latitude=filtered_df['Latitude'].mean(),
         longitude=filtered_df['Longitude'].mean(),
